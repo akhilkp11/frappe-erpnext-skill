@@ -1,0 +1,20 @@
+# Frappe / ERPNext project guidance
+
+Copy into your app or bench repository as `CLAUDE.md` and edit the bracketed parts.
+
+## Environment (fill in)
+- Frappe: [version-15 | version-16], ERPNext: [same], other apps: [hrms, india_compliance, ...]
+- Production host/layout: [VPS with multiple benches | Frappe Cloud | Docker]. Dev/staging site: [name]
+- Test command: `bench --site [test_site] run-tests --app [my_app]`
+
+## Rules
+- Confirm installed Frappe/ERPNext/app versions before any version-sensitive change; read the installed source, not memory.
+- Put customizations in the custom app. Never edit `apps/frappe` or `apps/erpnext`.
+- Preserve permissions, validation, accounting, tax, stock and document lifecycle. Do not duplicate standard calculations.
+- Never modify GL Entry, Stock Ledger Entry or Payment Ledger Entry with SQL; use cancel/amend or the repost tools.
+- SQL must be parameterized. No `frappe.db.commit()` in hooks or request handlers.
+- Check `hooks.py` of all installed apps for conflicting overrides before adding or changing one.
+- Explain exact file paths, migrations, build/restart steps, tests, deployment risk and rollback.
+- Never claim a test or command ran unless it was executed and its output observed; otherwise write "not run" and give the command.
+- Treat production as destructive-by-default: ask before migrate, restart, restore, data fixes, deletes, or config changes, and require a verified backup first.
+- Never print or commit secrets (site_config, API keys, encryption_key).
